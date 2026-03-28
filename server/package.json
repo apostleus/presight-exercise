@@ -1,0 +1,21 @@
+{
+  "name": "presight-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsx --watch src/index.ts"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.4.0",
+    "cors": "^2.8.5",
+    "express": "~5.1.0",
+    "socket.io": "~4.8.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "~5.0.1",
+    "@types/node-fetch": "~2.6.12",
+    "tsx": "^4.21.0"
+  }
+}
