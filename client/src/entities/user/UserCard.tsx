@@ -31,7 +31,7 @@ export function UserCard({ user, style }: Props) {
                         {visibleHobbies.map((hobby) => (
                             <span
                                 key={hobby}
-                                className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full"
+                                className="text-xs bg-[#e6f6ff] text-[#0077cc] px-2 py-0.5 rounded-full"
                             >
                                 {hobby}
                             </span>

@@ -56,7 +56,7 @@ function FilterSection({ title, options, selected, onToggle }: FilterSectionProp
                                 type="checkbox"
                                 checked={selected.includes(option.name)}
                                 onChange={() => onToggle(option.name)}
-                                className="rounded text-blue-600"
+                                className="rounded text-[#00A3FF]"
                             />
                             <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1 truncate">
                                 {option.name}

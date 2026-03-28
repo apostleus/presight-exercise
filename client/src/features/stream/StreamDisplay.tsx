@@ -64,7 +64,7 @@ export function StreamDisplay() {
                 {status !== "streaming" ? (
                     <button
                         onClick={startStream}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                        className="px-4 py-2 bg-[#00A3FF] hover:bg-[#0700c4] text-white rounded-lg transition-colors text-sm font-medium"
                     >
                         {status === "done" ? "Stream Again" : "Start Streaming"}
                     </button>
@@ -78,12 +78,12 @@ export function StreamDisplay() {
                 )}
                 {status === "streaming" && (
                     <span className="text-sm text-gray-500 flex items-center gap-1.5">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                        <span className="w-2 h-2 bg-[#00A3FF] rounded-full animate-pulse" />
                         Streaming...
                     </span>
                 )}
                 {status === "done" && (
-                    <span className="text-sm text-green-600">
+                    <span className="text-sm text-[#7edb56]">
                         ✓ {text.length} characters received
                     </span>
                 )}
@@ -91,10 +91,10 @@ export function StreamDisplay() {
 
             {text && (
                 <div className="flex-1 overflow-auto bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-                    <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap font-mono">
+                    <p className="text-sm leading-relaxed text-[#404040] whitespace-pre-wrap font-['IBM_Plex_Mono']">
                         {text}
                         {status === "streaming" && (
-                            <span className="inline-block w-0.5 h-4 bg-blue-500 ml-0.5 animate-pulse" />
+                            <span className="inline-block w-0.5 h-4 bg-[#00A3FF] ml-0.5 animate-pulse" />
                         )}
                     </p>
                 </div>

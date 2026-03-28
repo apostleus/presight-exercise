@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+    --color-brand: #00A3FF;
+    --color-brand-dark: #0700c4;
+    --color-brand-mid: #10b5b0;
+    --color-brand-accent: #7edb56;
+    --color-text: #404040;
+    --font-mono: "IBM Plex Mono", monospace;
+}

@@ -41,7 +41,7 @@ export function JobList() {
                 <button
                     onClick={startJobs}
                     disabled={isRunning || jobs.some((j) => j.status === "pending")}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    className="px-4 py-2 bg-[#00A3FF] hover:bg-[#0700c4] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                     {isRunning ? "Sending..." : "Send 20 Jobs"}
                 </button>
@@ -63,13 +63,13 @@ export function JobList() {
 
                         <span
                             className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                job.status === "done" ? "bg-green-500" : "bg-yellow-400 animate-pulse"
+                                job.status === "done" ? "bg-[#7edb56]" : "bg-yellow-400 animate-pulse"
                             }`}
                         />
 
                         <span
                             className={`text-xs font-medium w-14 ${
-                                job.status === "done" ? "text-green-600" : "text-yellow-600"
+                                job.status === "done" ? "text-[#5ab83e]" : "text-yellow-600"
                             }`}
                         >
                             {job.status}
