@@ -1,6 +1,8 @@
 import express from "express";
 import usersRouter from "./routes/users.js";
 import streamRouter from "./routes/stream.js";
+import jobsRouter from "./routes/jobs.js";
+import { initJobQueue } from "./services/jobQueue.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
@@ -12,11 +14,13 @@ export const io = new Server(httpServer, {
     cors: { origin: "*" },
 });
 
+initJobQueue(io);
+
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", usersRouter);
 app.use("/api/stream", streamRouter);
-// app.use("/api/jobs", jobsRouter);
+app.use("/api/jobs", jobsRouter);
 
 io.on("connection", (socket) => {
     console.log("client connected:", socket.id);
