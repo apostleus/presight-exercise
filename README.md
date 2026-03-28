@@ -1,40 +1,73 @@
 # Presight Frontend Exercise
 
-#### Create a react application and nodes web server for the following use cases
+A full-stack application built with React, Node.js, and WebSockets demonstrating three real-time features.
 
-1. Create a mock api to serve paginated list of information with filtering and search capabilities
+## Tech Stack
 
-   - Define a data object having the following
-     - avatar
-     - first_name
-     - last_name
-     - age
-     - nationality
-     - hobbies (list of 0 to 10 items)
-   - Display the list as individual cards using virtual scroll component, subsequent pages must be loaded using infinite scroll technique (preferably using `@tanstack/react-virtual`)
-   - Design the card as
-     ```
-     |----------------------------------|
-     | avatar      first_name+last_name |
-     |             nationality      age |
-     |                                  |
-     |             (2 hobbies) (+n)     |
-     |----------------------------------|
-     ```
-     > display top 2 hobbies and show remaining count if applicable as _`+n`_
-   - Provide a side list in page to show top 20 hobbies and nationality that can be applied as filters
-   - Provide a searchbox to find and filter the data by first_name, last_name
+**Client:** React 19, TypeScript, Vite, TailwindCSS v4, React Query, @tanstack/react-virtual, Socket.io-client
+**Server:** Node.js, Express 5, Socket.io, worker_threads
+**Architecture:** Feature Sliced Design (client), monorepo via Lerna + Yarn workspaces
 
-2. Read http response as stream and create a display that will print the response one character at a time
+## Getting Started
 
-   - Create an api that responds with long text (`faker.lorem.paragraphs(32)`)
-   - Read the response as a stream, while the stream is open display the available response one character at a time
-   - Once the stream is closed print entire response
+```bash
+yarn install
+yarn start
+```
 
-3. Create an api that will process each request in webworker and respond with the result over websocket
+| Service | URL                   |
+|---------|-----------------------|
+| Client  | http://localhost:5174 |
+| Server  | http://localhost:3000 |
 
-   - The api endpoint must cache each request into an in-memory queue and respond with `pending`
-   - The queued requests must be processed in a webworker, the worker should send a result over websockets (for the exercise a text result can be sent after a timeout of 2seconds)
-   - In react show 20 items that correspond to 20 requests, display `pending` for each of the requests and display corresponding result on receiving the websocket result
+## Use Cases
 
-   > request --> `pending` --> socket message --> `result`
+### 1. Users — `/users`
+
+Paginated list of 500 users with virtual scroll and infinite scroll.
+Filter by nationality and hobbies via sidebar. Search by name.
+
+**Implementation highlights:**
+- `@tanstack/react-virtual` for DOM-efficient rendering (only visible cards in DOM)
+- `useInfiniteQuery` from React Query for cursor-based pagination
+- `IntersectionObserver` sentinel for infinite scroll trigger
+- Server-side aggregation returns top-20 hobbies/nationalities per filtered result set
+
+### 2. Streaming — `/streaming`
+
+Streams ~8,000 characters of text from server and displays them one character at a time.
+
+**Implementation highlights:**
+- Server sends chunked HTTP response via `res.write()` + `setInterval`
+- Client reads via `response.body.getReader()` (Web Streams API)
+- Characters queued in memory, displayed via `setInterval(100ms)` — decoupled from network timing
+- Stop button calls `reader.cancel()` to actually close the fetch connection
+
+### 3. Workers — `/workers`
+
+Sends 20 jobs to the server and receives results in real-time over WebSocket.
+
+**Implementation highlights:**
+- Server processes jobs in a `worker_threads` Worker with a 2-second delay
+- Results pushed to all clients via Socket.io `io.emit`
+- Client subscribes with `socket.on("job:result", ...)` and updates UI reactively
+- UI transitions from `pending` → `done` as each job completes
+
+## Project Structure
+
+```
+presight-execise/
+├── client/               # React app (Feature Sliced Design)
+│   └── src/
+│       ├── app/          # Entry point, routing, global styles
+│       ├── pages/        # Page compositions
+│       ├── features/     # user-list, stream, jobs
+│       ├── entities/     # user (model, api, card)
+│       └── shared/       # socket singleton, types
+└── server/               # Node.js API
+    └── src/
+        ├── routes/       # users, stream, jobs
+        ├── data/         # 500 generated users (faker, seeded on startup)
+        ├── workers/      # worker_threads job processor
+        └── services/     # job queue, socket.io wiring
+```
